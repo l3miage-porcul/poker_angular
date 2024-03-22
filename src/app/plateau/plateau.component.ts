@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { carte } from '../type';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-plateau',
@@ -9,4 +11,8 @@ import { Component } from '@angular/core';
 })
 export class PlateauComponent {
 
+  @Input() cartes!: Set<carte>;
+  constructor() { 
+    console.log(this.cartes);
+  }
 }
