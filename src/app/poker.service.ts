@@ -7,7 +7,6 @@ import { carte, defaultCarte } from './type';
 export class PokerService {
 
     private deckId: string = '';
-    private nbCartesRestantes: number = 0;
 
     constructor() {
         this.getDeckId().then(deckId => {
@@ -21,25 +20,31 @@ export class PokerService {
         const response = await fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1');
         const data = await response.json();
         const deckId = data.deck_id;
-        this.nbCartesRestantes = parseInt(data.remaining);
 
         // Retourner l'identifiant du jeu de cartes
         return deckId;
     }
     
-    async drawCards(cardsNumber : number): Promise<carte> {
+    async drawCards(cardsNumber : number) : Promise<Set<carte>> {
         
         const response = await fetch(`https://deckofcardsapi.com/api/deck/${this.deckId}/draw/?count=${cardsNumber}`);
         const data = await response.json();
+        let cartes: Set<carte> = new Set();
         
-        for()
-        const carte: carte = {
-            code: data.cards[0].code,
-            image: data.cards[0].images[0],
-            value: data.cards[0].value,
-            suit: data.cards[0].suit
-        };
+        for (let i = 0; i < cardsNumber; i++) {
+            
+            const carte: carte = {
+                code: data.cards[i].code,
+                image: data.cards[i].images[0],
+                value: data.cards[i].value,
+                suit: data.cards[i].suit
+            };
+
+            cartes.add(carte);
+        }
+
+        return cartes;
+    }
     
-        return carte;
-    } 
+        
 }
